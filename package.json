@@ -4,7 +4,7 @@
   "description": "A test blockchain",
   "main": "index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest --watch"
   },
   "repository": {
     "type": "git",
