@@ -40,7 +40,7 @@ class Blockchain {
 
     // Check for lastHash and hash of each block
     for (let i = 1; i < chain.length; i++) {
-      const { hash, timestamp, lastHash, data } = chain[i];
+      const { hash, timestamp, lastHash, nonce, difficulty, data } = chain[i];
 
       // Last hash of current block should be equal to hash of previous
       if (lastHash !== chain[i - 1].hash) {
@@ -48,7 +48,7 @@ class Blockchain {
       }
 
       // Hash of current block should be valid
-      if (cryptoHash(lastHash, data, timestamp) !== hash) {
+      if (cryptoHash(lastHash, data, timestamp, nonce, difficulty) !== hash) {
         return false;
       }
     }
