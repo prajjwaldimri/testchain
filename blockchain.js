@@ -51,6 +51,9 @@ class Blockchain {
       if (cryptoHash(lastHash, data, timestamp, nonce, difficulty) !== hash) {
         return false;
       }
+
+      // Difficulty shouldn't be higher or lower than 1
+      if (Math.abs(chain[i - 1].difficulty - difficulty) > 1) return false;
     }
 
     return true;
