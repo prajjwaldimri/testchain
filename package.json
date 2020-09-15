@@ -6,7 +6,9 @@
   "scripts": {
     "test": "jest --watch",
     "start": "node index.js",
-    "dev": "nodemon index.js"
+    "dev": "npm run start-redis && nodemon index.js",
+    "dev-peer": "cross-env GENERATE_PEER_PORT='true' nodemon index.js",
+    "start-redis": "redis/src/redis-server --daemonize yes"
   },
   "repository": {
     "type": "git",
@@ -24,8 +26,10 @@
   },
   "dependencies": {
     "body-parser": "^1.19.0",
+    "cross-env": "^7.0.2",
     "express": "^4.17.1",
     "hex-to-binary": "^1.0.1",
-    "nodemon": "^2.0.4"
+    "nodemon": "^2.0.4",
+    "redis": "^3.0.2"
   }
 }
