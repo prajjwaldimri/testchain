@@ -32,8 +32,9 @@ class Blockchain {
 
   static isValidChain(chain) {
     // Check if the chain starts with genesis block
+    const genesisBlock = Block.genesis();
     for (const key in chain[0]) {
-      if (chain[0][key] !== Block.genesis()[key]) {
+      if (chain[0][key] !== genesisBlock[key]) {
         return false;
       }
     }

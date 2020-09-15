@@ -7,7 +7,7 @@ const GENESIS_DATA = {
   hash: "hash-one",
   difficulty: INITIAL_DIFFICULTY,
   nonce: 0,
-  data: [],
+  data: "",
 };
 
 module.exports = { GENESIS_DATA, MINE_RATE };
