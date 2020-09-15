@@ -4,7 +4,8 @@
   "description": "A test blockchain",
   "main": "index.js",
   "scripts": {
-    "test": "jest --watch"
+    "test": "jest --watch",
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",
@@ -21,6 +22,7 @@
     "jest": "^26.1.0"
   },
   "dependencies": {
+    "express": "^4.17.1",
     "hex-to-binary": "^1.0.1"
   }
 }
