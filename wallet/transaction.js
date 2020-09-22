@@ -55,12 +55,12 @@ class Transaction {
     }
 
     if (!this.outputMap[recipient]) {
-      this.outputMap[recipient] = amount;
+      this.outputMap[recipient] = Number.parseFloat(amount);
     } else {
-      this.outputMap[recipient] += amount;
+      this.outputMap[recipient] += Number.parseFloat(amount);
     }
 
-    this.outputMap[senderWallet.publicKey] -= amount;
+    this.outputMap[senderWallet.publicKey] -= Number.parseFloat(amount);
 
     this.input = this.createInput({ senderWallet, outputMap: this.outputMap });
   }
