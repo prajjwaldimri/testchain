@@ -1,5 +1,7 @@
 const Block = require("./block");
+const Transaction = require("../wallet/transaction");
 const { cryptoHash } = require("../util");
+const { REWARD_INPUT, MINING_REWARD } = require("../config");
 
 class Blockchain {
   constructor() {
@@ -15,7 +17,7 @@ class Blockchain {
     this.chain.push(newBlock);
   }
 
-  replaceChain(chain, onSuccess) {
+  replaceChain(chain, validateTransactions, onSuccess) {
     if (chain.length <= this.chain.length) {
       console.error("Incoming change must be longer");
       return;
@@ -26,9 +28,57 @@ class Blockchain {
       return;
     }
 
+    if (validateTransactions && !this.validTransactionData({ chain })) {
+      return;
+    }
+
     if (onSuccess) onSuccess();
     console.log("Replacing chain with ", chain);
     this.chain = chain;
+  }
+
+  validTransactionData({ chain }) {
+    for (let i = 1; i < chain.length; i++) {
+      const block = chain[i];
+      const transactionSet = new Set();
+      let rewardTransactionCount = 0;
+
+      for (const transaction of block.data) {
+        if ((transaction.input.address = REWARD_INPUT.address)) {
+          rewardTransactionCount += 1;
+
+          if (rewardTransactionCount > 1) {
+            return false;
+          }
+
+          if (Object.values(transaction.outputMap)[0] !== MINING_REWARD) {
+            return false;
+          }
+        } else {
+          if (!Transaction.validTransaction(transaction)) {
+            return false;
+          }
+
+          const trueBalance = Wallet.calculateBalance({
+            chain: this.chain,
+            address: transaction.input.address,
+          });
+
+          if (transaction.input.amount !== trueBalance) {
+            return false;
+          }
+
+          // Duplicate transactions
+          if (transactionSet.has(transaction)) {
+            return false;
+          } else {
+            transactionSet.add(transaction);
+          }
+        }
+      }
+    }
+
+    return true;
   }
 
   static isValidChain(chain) {
